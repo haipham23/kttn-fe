@@ -1,6 +1,6 @@
 {
   "name": "react-boilerplate",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Boilerplate for React, Redux, Express based on react-slingshot",
   "engines": {
     "npm": ">=3",
@@ -20,7 +20,9 @@
     "test": "jest",
     "test:cover": "npm run test -- --coverage",
     "test:watch": "npm run test -- --watch",
-    "docker:build": "sudo docker build -t registry2.ongtu.com/kttn-fe ."
+    "docker:build": "docker build -t registry2.ongtu.com/kttn-fe .",
+    "docker:push": "docker push registry2.ongtu.com/kttn-fe",
+    "deploy": "npm run docker:build && npm run docker:push"
   },
   "author": "Hai Pham",
   "license": "MIT",

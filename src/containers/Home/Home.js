@@ -5,6 +5,7 @@ class Home extends React.Component {
   render() {
     return (
       <div className="container">
+        <div>V 0.1.1</div>
         <h1>List of chapters</h1>
       </div>
     );
