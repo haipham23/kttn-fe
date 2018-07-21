@@ -4,9 +4,11 @@ import { connect } from 'react-redux';
 class Footer extends React.Component {
   render() {
     return (
-      <div>
-        Copyright 2018 © Hai Pham
-      </div>
+      <footer className="footer">
+        <div className="content has-text-centered">
+          Copyright 2018 © Hai Pham
+        </div>
+      </footer>
     );
   }
 }

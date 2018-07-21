@@ -6,11 +6,12 @@ import { Route, Switch } from 'react-router-dom';
 import createHistory from 'history/createBrowserHistory';
 
 import configureStore from './store/configureStore';
-import { INDEX } from './constants/routePaths';
+import { INDEX, NEW_CHAPTER } from './constants/routePaths';
 
 import Header from './components/Header/Header';
 import Footer from './components/Footer/Footer';
 import Home from './containers/Home/Home';
+import NewChapter from './containers/Chapter/NewChapter';
 import NotFound from './components/NotFound/NotFound';
 
 require('./favicon.ico');
@@ -25,6 +26,7 @@ render(
         <Header />
         <Switch>
           <Route exact path={INDEX} component={Home} />
+          <Route exact path={NEW_CHAPTER} component={NewChapter} />
           <Route component={NotFound} />
         </Switch>
         <Footer />

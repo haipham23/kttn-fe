@@ -4,8 +4,8 @@ import { connect } from 'react-redux';
 class NotFound extends React.Component {
   render() {
     return (
-      <div>
-        NotFound
+      <div className="container">
+        Page Not Found!
       </div>
     );
   }

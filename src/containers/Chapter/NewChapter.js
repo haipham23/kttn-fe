@@ -1,17 +1,20 @@
 import React from 'react';
 import { connect } from 'react-redux';
 
-class Home extends React.Component {
+import ChapterForm from './ChapterForm';
+
+class NewChapter extends React.Component {
   render() {
     return (
       <div className="container">
-        <h1>List of chapters</h1>
+        <h1>New Chapter</h1>
+        <ChapterForm />
       </div>
     );
   }
 }
 
-Home.propTypes = {
+NewChapter.propTypes = {
   //
 };
 
@@ -23,4 +26,4 @@ function mapStateToProps({ i18n }) {
 
 export default connect(
   mapStateToProps
-)(Home);
+)(NewChapter);
