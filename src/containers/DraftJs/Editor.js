@@ -11,8 +11,9 @@ import Dropzone from 'react-dropzone';
 
 import Toolbar from './Toolbar';
 import { blockRenderMap, styleMap, mediaBlockRenderer } from './Editor.options';
-import { addEmptyBlock, uploadFile } from './utils';
+import { addBlock, uploadFile, isVideo, getVideoSrc } from './utils';
 import { EditorWrapper, EditorContent, H3 } from './Editor.styled';
+
 
 class DraftEditor extends React.Component {
   constructor(props) {
@@ -31,6 +32,7 @@ class DraftEditor extends React.Component {
     this._toggleReadonly = this._toggleReadonly.bind(this);
     this._addMedia = this._addMedia.bind(this);
     this._onDrop = this._onDrop.bind(this);
+    this._handlePastedText = this._handlePastedText.bind(this);
   }
 
   _toggleInline(style) {
@@ -51,7 +53,7 @@ class DraftEditor extends React.Component {
     const { editorState } = this.state;
 
     if (isSoftNewlineEvent(e)) {
-      this.onChange(addEmptyBlock(editorState));
+      this.onChange(addBlock(editorState));
       return 'handled';
     }
 
@@ -67,7 +69,7 @@ class DraftEditor extends React.Component {
 
   _addMedia({ src, format, name }) {
     const { editorState } = this.state;
-    const newEditorState = addEmptyBlock(editorState, 'atomic', {
+    const newEditorState = addBlock(editorState, 'atomic', {
       src,
       format,
       name
@@ -79,6 +81,19 @@ class DraftEditor extends React.Component {
   _onDrop(acceptedFiles) {
     uploadFile(acceptedFiles[0])
       .then(this._addMedia);
+  }
+
+  _handlePastedText(text) {
+    if (isVideo(text)) {
+      this.onChange(addBlock(
+        this.state.editorState, 
+        'atomic', 
+        getVideoSrc(text)
+      ));
+      return 'handled';
+    }
+
+    return 'not-handled';
   }
   
   render() {
@@ -119,6 +134,7 @@ class DraftEditor extends React.Component {
               customStyleMap={styleMap}
               onChange={this.onChange}
               handleReturn={this._handleReturn}
+              handlePastedText={this._handlePastedText}
               readOnly={this.state.isReadonly}
             />
           </EditorContent>

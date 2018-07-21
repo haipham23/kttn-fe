@@ -6,6 +6,8 @@ import {
   genKey
 } from 'draft-js';
 
+const YOUTUBEMATCH_URL = /^(?:https?:\/\/)?(?:www\.)?(?:youtu\.be\/|youtube\.com\/(?:embed\/|v\/|watch\?v=|watch\?.+&v=))((\w|-){11})(?:\S+)?$/;
+
 export const getCurrentBlockKey = (editorState) => {
   const selectionState = editorState.getSelection();
   const blockKey = selectionState.getStartKey();
@@ -25,7 +27,7 @@ export const getCurrentBlock = (editorState) => {
 Used from [react-rte](https://github.com/sstur/react-rte/blob/master/src/lib/insertBlockAfter.js)
 by [sstur](https://github.com/sstur)
 */
-export const addEmptyBlock = (editorState, type = 'unstyled', data = {}) => {
+export const addBlock = (editorState, type = 'unstyled', data = {}) => {
   const content = editorState.getCurrentContent();
   const blockMap = content.getBlockMap();
   const currentBlockKey = getCurrentBlockKey(editorState);
@@ -73,7 +75,7 @@ export const addEmptyBlock = (editorState, type = 'unstyled', data = {}) => {
   let newEditorContent = EditorState.push(editorState, newContent, 'split-block');
 
   if (type === 'atomic') {
-    newEditorContent = addEmptyBlock(newEditorContent);
+    newEditorContent = addBlock(newEditorContent);
   }
 
   return newEditorContent;
@@ -101,4 +103,22 @@ export const uploadFile = (file) => {
       name: data.original_filename
     };
   });
+};
+
+
+
+export const isVideo = (url) => {
+  //take url check if it's a valid video url return true or false
+  return YOUTUBEMATCH_URL.test(url);
+};
+
+
+export const getVideoSrc = (url) => {
+  //parse url to videoSrc object which will pass to WrapperComponent as props
+  const id = url && url.match(YOUTUBEMATCH_URL)[1];
+  return {
+    src: url,
+    format: 'youtube',
+    name: id
+  };
 };

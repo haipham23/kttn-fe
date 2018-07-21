@@ -53,6 +53,7 @@
     "react-router": "4.3.1",
     "react-router-dom": "4.3.1",
     "react-router-redux": "5.0.0-alpha.9",
+    "react-youtube": "7.6.0",
     "redux": "4.0.0",
     "redux-thunk": "2.3.0",
     "version-healthcheck": "0.1.2",

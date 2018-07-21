@@ -1,4 +1,5 @@
 import React from 'react';
+import YouTube from 'react-youtube';
 
 import {
   ImageWrapper,
@@ -32,6 +33,19 @@ const Media = ({ block }) => {
   
   if (format === 'mp3') {
     return <AudioPlayer src={src} name={name} />;
+  }
+
+  if (format === 'youtube') {
+    console.log(name);
+    return (
+      <YouTube
+        videoId={name}
+        opts={{
+          height: '390',
+          width: '640'
+        }}
+      />
+    );
   }
 
   return <div>{format}</div>;
