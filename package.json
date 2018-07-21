@@ -1,7 +1,7 @@
 {
-  "name": "react-boilerplate",
-  "version": "0.1.1",
-  "description": "Boilerplate for React, Redux, Express based on react-slingshot",
+  "name": "kttn-fe",
+  "version": "0.1.2",
+  "description": "KTTN",
   "engines": {
     "npm": ">=3",
     "node": ">=6"

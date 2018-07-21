@@ -1,15 +1,22 @@
 import React from 'react';
 
+import {
+  ImageWrapper,
+  AudioWrapper,
+  Audio,
+  AudioDesc
+} from './Media.styled';
+
 const Image = ({ src, alt }) => {
-	return <img style={{ maxHeight: '300px', borderRadius: '4px' }} src={src} alt={alt} />;
+	return <ImageWrapper src={src} alt={alt} />;
 };
 
 const AudioPlayer = ({ src, name }) => {
   return (
-    <div style={{ backgroundColor: '#f5f5f5', width: '300px', borderRadius: '4px' }}>
-      <audio style={{ height: '55px' }} src={src} controls />
-      <p style={{ padding: '0 0 12px 12px' }}>{name}</p>
-    </div>
+    <AudioWrapper>
+      <Audio src={src} controls />
+      <AudioDesc>{name}</AudioDesc>
+    </AudioWrapper>
   );
 };
 
