@@ -2,41 +2,17 @@ import React from 'react';
 import {
   Editor, 
   EditorState, 
-  RichUtils, 
-  convertToRaw 
+  RichUtils,
+  convertToRaw
 } from 'draft-js';
 import isSoftNewlineEvent from 'draft-js/lib/isSoftNewlineEvent';
-import Immutable from 'immutable';
 import JSONPretty from 'react-json-pretty';
+import Dropzone from 'react-dropzone';
 
-import { EditorWrapper, H1, H2, H3, Quote, Div } from './Editor.styled';
-
-import { addEmptyBlock } from './utils';
 import Toolbar from './Toolbar';
-
-const blockRenderMap = Immutable.Map({
-  'header-one': {
-    element: H1
-  },
-  'header-two': {
-    element: H2
-  },
-  'header-three': {
-    element: H3
-  },
-  'blockquote': {
-    element: Quote
-  },
-  'unstyled': {
-    element: Div
-  }
-});
-
-const styleMap = {
-  'HIGHLIGHT': {
-    backgroundColor: '#ffff00',
-  },
-};
+import { blockRenderMap, styleMap, mediaBlockRenderer } from './Editor.options';
+import { addEmptyBlock, uploadFile } from './utils';
+import { EditorWrapper, EditorContent, H3 } from './Editor.styled';
 
 class DraftEditor extends React.Component {
   constructor(props) {
@@ -45,13 +21,16 @@ class DraftEditor extends React.Component {
       editorState: EditorState.createEmpty(),
       isReadonly: false,
     };
+    this.wrapper = null;
 
-    this.onChange = (editorState) => this.setState({editorState});
+    this.onChange = (editorState) => this.setState({ editorState });
 
     this._toggleInline = this._toggleInline.bind(this);
     this._toggleBlock = this._toggleBlock.bind(this);
     this._handleReturn = this._handleReturn.bind(this);
     this._toggleReadonly = this._toggleReadonly.bind(this);
+    this._addMedia = this._addMedia.bind(this);
+    this._onDrop = this._onDrop.bind(this);
   }
 
   _toggleInline(style) {
@@ -85,6 +64,22 @@ class DraftEditor extends React.Component {
       isReadonly
     });
   }
+
+  _addMedia({ src, format, name }) {
+    const { editorState } = this.state;
+    const newEditorState = addEmptyBlock(editorState, 'atomic', {
+      src,
+      format,
+      name
+    });
+
+    this.onChange(newEditorState);
+  }
+
+  _onDrop(acceptedFiles) {
+    uploadFile(acceptedFiles[0])
+      .then(this._addMedia);
+  }
   
   render() {
     const content = convertToRaw(this.state.editorState.getCurrentContent());
@@ -92,21 +87,41 @@ class DraftEditor extends React.Component {
     return (
       <div>
         <H3>Content:</H3>
-        <Toolbar
-          toggleInline={this._toggleInline}
-          toggleBlock={this._toggleBlock}
-          toggleReadonly={this._toggleReadonly}
-          isReadonly={this.state.isReadonly}
-        />
         <EditorWrapper>
-          <Editor
-            editorState={this.state.editorState}
-            blockRenderMap={blockRenderMap}
-            customStyleMap={styleMap}
-            onChange={this.onChange}
-            handleReturn={this._handleReturn}
-            readOnly={this.state.isReadonly}
+          <Toolbar
+            toggleInline={this._toggleInline}
+            toggleBlock={this._toggleBlock}
+            toggleReadonly={this._toggleReadonly}
+            isReadonly={this.state.isReadonly}
           />
+          <Dropzone
+            onDrop={this._onDrop}
+            multiple={false}
+            accept="image/*, audio/*, video/*"
+            style={{
+              width: '100%',
+              height: '50px',
+              marginBottom: '10px',
+              borderWidth: '2px',
+              borderColor: 'rgb(102, 102, 102)',
+              borderStyle: 'dashed',
+              borderRadius: '4px'
+            }}
+            activeStyle={{
+              backgroundColor: '#eee'
+            }}
+          />
+          <EditorContent>
+            <Editor
+              editorState={this.state.editorState}
+              blockRenderMap={blockRenderMap}
+              blockRendererFn={mediaBlockRenderer}
+              customStyleMap={styleMap}
+              onChange={this.onChange}
+              handleReturn={this._handleReturn}
+              readOnly={this.state.isReadonly}
+            />
+          </EditorContent>
         </EditorWrapper>
         <JSONPretty json={content} />
       </div>

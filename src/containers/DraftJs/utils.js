@@ -1,4 +1,5 @@
-import { List } from 'immutable';
+import { List, Map } from 'immutable';
+import axios from 'axios';
 import {
   EditorState,
   ContentBlock,
@@ -24,7 +25,7 @@ export const getCurrentBlock = (editorState) => {
 Used from [react-rte](https://github.com/sstur/react-rte/blob/master/src/lib/insertBlockAfter.js)
 by [sstur](https://github.com/sstur)
 */
-export const addEmptyBlock = (editorState, type = 'unstyled') => {
+export const addEmptyBlock = (editorState, type = 'unstyled', data = {}) => {
   const content = editorState.getCurrentContent();
   const blockMap = content.getBlockMap();
   const currentBlockKey = getCurrentBlockKey(editorState);
@@ -44,6 +45,7 @@ export const addEmptyBlock = (editorState, type = 'unstyled') => {
     text: '',
     characterList: List(),
     depth: 0,
+    data: Map(data),
   });
 
   const newBlockMap = blocksBefore.concat(
@@ -68,5 +70,35 @@ export const addEmptyBlock = (editorState, type = 'unstyled') => {
     }),
   });
 
-  return EditorState.push(editorState, newContent, 'split-block');
+  let newEditorContent = EditorState.push(editorState, newContent, 'split-block');
+
+  if (type === 'atomic') {
+    newEditorContent = addEmptyBlock(newEditorContent);
+  }
+
+  return newEditorContent;
+};
+
+
+export const uploadFile = (file) => {
+  const formData = new FormData();
+  formData.append('file', file);
+  formData.append('cloud_name', 'hai-pham');
+  formData.append('api_key', '822873635386968');
+  formData.append('upload_preset', 'kttn-fe');
+  formData.append('timestamp', (Date.now() / 1000) | 0);
+  
+  return axios.post(
+    'https://api.cloudinary.com/v1_1/hai-pham/upload', 
+    formData, 
+    { headers: { 'X-Requested-With': 'XMLHttpRequest' } }
+  ).then(response => {
+    const data = response.data;
+
+    return {
+      src: data.secure_url,
+      format: data.format,
+      name: data.original_filename
+    };
+  });
 };

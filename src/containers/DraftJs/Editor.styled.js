@@ -1,11 +1,14 @@
 import styled from 'react-emotion';
 
 export const EditorWrapper = styled('div')`
+  position: relative;
+  margin-bottom: 24px;
+`;
+
+export const EditorContent = styled('div')`
   border: 1px solid #eee;
   border-radius: 2px;
   padding: 12px 12px 0 12px;
-  margin-top: -20px;
-  margin-bottom: 24px;
 `;
 
 export const H1 = styled('div')`
