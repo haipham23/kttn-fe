@@ -1,41 +1,41 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import { BtnGroup } from './Toolbar.styled';
+import { BtnWrapper, BtnGroup } from './Toolbar.styled';
 
 class Toolbar extends React.PureComponent {
   render() {
     const { toggleInline, toggleBlock, toggleReadonly, isReadonly } = this.props;
 
     return (
-      <div className="field is-grouped">
+      <BtnWrapper className="field is-grouped">
         <BtnGroup className="buttons has-addons">
-          <button className="button" onClick={() => toggleInline('BOLD')}>
+          <button className="button" onClick={() => toggleInline('BOLD')} disabled={isReadonly}>
             <span className="icon">
               <i className="fas fa-bold" />
             </span>
           </button>
-          <button className="button" onClick={() => toggleInline('ITALIC')}>
+          <button className="button" onClick={() => toggleInline('ITALIC')} disabled={isReadonly}>
             <span className="icon">
               <i className="fas fa-italic" />
             </span>
           </button>
-          <button className="button" onClick={() => toggleInline('UNDERLINE')}>
+          <button className="button" onClick={() => toggleInline('UNDERLINE')} disabled={isReadonly}>
             <span className="icon">
               <i className="fas fa-underline" />
             </span>
           </button>
-          <button className="button" onClick={() => toggleInline('HIGHLIGHT')}>
+          <button className="button" onClick={() => toggleInline('HIGHLIGHT')} disabled={isReadonly}>
             <span className="icon">
               <i className="fas fa-highlighter" />
             </span>
           </button>
         </BtnGroup>
         <BtnGroup className="buttons has-addons">
-          <button className="button" onClick={() => toggleBlock('header-one')}>H1</button>
-          <button className="button" onClick={() => toggleBlock('header-two')}>H2</button>
-          <button className="button" onClick={() => toggleBlock('header-three')}>H3</button>
-          <button className="button" onClick={() => toggleBlock('blockquote')}>
+          <button className="button" onClick={() => toggleBlock('header-one')} disabled={isReadonly}>H1</button>
+          <button className="button" onClick={() => toggleBlock('header-two')} disabled={isReadonly}>H2</button>
+          <button className="button" onClick={() => toggleBlock('header-three')} disabled={isReadonly}>H3</button>
+          <button className="button" onClick={() => toggleBlock('blockquote')} disabled={isReadonly}>
             <span className="icon">
               <i className="fas fa-quote-right" />
             </span>
@@ -57,7 +57,7 @@ class Toolbar extends React.PureComponent {
             </span>
           </button>
         }
-      </div>
+      </BtnWrapper>
     );
   }
 }

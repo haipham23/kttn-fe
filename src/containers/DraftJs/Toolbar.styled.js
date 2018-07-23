@@ -1,8 +1,7 @@
 import styled from 'react-emotion';
 
-export const EmptyBlock = styled('div')`
-  height: 44px;
-  margin-bottom: 1em;
+export const BtnWrapper = styled('div')`
+  margin-bottom: -12px !important;
 `;
 
 export const BtnGroup = styled('div')`
