@@ -2,17 +2,16 @@ import React from 'react';
 import {
   Editor, 
   EditorState, 
-  RichUtils,
-  convertToRaw
+  RichUtils
 } from 'draft-js';
 import isSoftNewlineEvent from 'draft-js/lib/isSoftNewlineEvent';
-import JSONPretty from 'react-json-pretty';
+// import JSONPretty from 'react-json-pretty';
 import Dropzone from 'react-dropzone';
 
 import Toolbar from './Toolbar';
 import { blockRenderMap, styleMap, mediaBlockRenderer, keyBindingFn } from './Editor.options';
 import { addBlock, uploadFile, isVideo, getVideoSrc } from './utils';
-import { EditorWrapper, EditorContent, H3, Overlay } from './Editor.styled';
+import { EditorWrapper, EditorContent, Overlay } from './Editor.styled';
 import { keys, handle } from './constants';
 
 
@@ -106,7 +105,7 @@ class DraftEditor extends React.Component {
         uploadFile(acceptedFiles[0])
           .then(this._addMedia)
           .then(() => this._toggleUploading(false))
-          .catch(() => this._toggleUploading(false))
+          .catch(() => this._toggleUploading(false));
       });
   }
 
@@ -154,18 +153,17 @@ class DraftEditor extends React.Component {
   
   render() {
     const { editorState, isDragging, isReadonly, isUploading } = this.state;
-    const content = convertToRaw(editorState.getCurrentContent());
+    // const content = convertToRaw(editorState.getCurrentContent());
     
     return (
       <div>
-        <H3>Content:</H3>
         <Toolbar
           toggleInline={this._toggleInline}
           toggleBlock={this._toggleBlock}
           toggleReadonly={this._toggleReadonly}
           isReadonly={isReadonly || isUploading}
         />
-        <EditorWrapper>
+        <EditorWrapper className="card">
           <Dropzone
             onDrop={this._onDrop}
             multiple={false}
@@ -202,9 +200,8 @@ class DraftEditor extends React.Component {
               />
             </EditorContent>
           </Dropzone>
-          
         </EditorWrapper>
-        <JSONPretty json={content} />
+        {/* <JSONPretty json={content} /> */}
       </div>
     );
   }

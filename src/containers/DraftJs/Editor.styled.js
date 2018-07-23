@@ -6,9 +6,8 @@ export const EditorWrapper = styled('div')`
 `;
 
 export const EditorContent = styled('div')`
-  border: 1px solid #eee;
   border-radius: 2px;
-  padding: 12px 12px 0 12px;
+  padding: 14px 14px 1px 14px;
 `;
 
 export const H1 = styled('div')`
@@ -43,8 +42,6 @@ export const Overlay = styled('div')`
   position: absolute;
   height: 100%;
   width: 100%;
-  border-color: rgb(102, 102, 102);
-  border-style: dashed;
   border-radius: 4px;
   background-color: #eee;
   display: flex;

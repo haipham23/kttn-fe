@@ -1,35 +1,33 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import NumericInput from 'react-numeric-input';
 
 import DraftEditor from '../DraftJs/Editor';
+import { Wrapper, EditorWrapper, NumberColumn } from './ChapterForm.styled';
 
 class ChapterForm extends React.Component {
   render() {
     return (
-      <div className="container">
-        <div className="field is-horizontal">
-          <div className="field-body">
+      <Wrapper className="container">
+        <div className="columns is-6">
+          <NumberColumn className="column">
             <div className="field">
-              <label className="label">Chapter No</label>
               <div className="control">
-                <NumericInput className="input" />
+              <input className="input" type="number" placeholder="Number" />
               </div>
-              <p className="help">This is a help text</p>
             </div>
+          </NumberColumn>
+          <div className="column is-half">
             <div className="field">
-              <label className="label">Label</label>
               <div className="control">
-                <input className="input" type="text" placeholder="Text input" />
+                <input className="input" type="text" placeholder="Title" />
               </div>
-              <p className="help">This is a help text</p>
             </div>
           </div>
         </div>
-        <div className="field">
+        <EditorWrapper>
           <DraftEditor />
-        </div>
-      </div>
+        </EditorWrapper>
+      </Wrapper>
     );
   }
 }

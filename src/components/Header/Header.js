@@ -4,15 +4,40 @@ import { connect } from 'react-redux';
 class Header extends React.Component {
   render() {
     return (
-      <div className="container">
-        Tin Lanh Tre
-        <nav className="breadcrumb is-centered is-medium has-bullet-separator" aria-label="breadcrumbs">
-          <ul>
-            <li><a href="/new-chapter">Add Chapter</a></li>
-            <li><a href="/new-quiz">Add Quiz</a></li>
-          </ul>
-        </nav>
-      </div>
+      <nav className="navbar is-info">
+        <div className="navbar-brand">
+          <a className="navbar-item" href="/">
+            <img src="https://bulma.io/images/bulma-logo-white.png" alt="Tin Lanh tre" width="112" height="28" />
+          </a>
+        </div>
+        <div className="navbar-menu">
+          <div className="navbar-start">
+            <a className="navbar-item" href="/new-chapter">
+              Add Chapter
+            </a>
+            <a className="navbar-item" href="/new-quiz">
+              Add Quiz
+            </a>
+            <a className="navbar-item" href="#">
+              Help
+            </a>
+          </div>
+          <div className="navbar-end">
+            <div className="navbar-item">
+              <div className="field has-addons">
+                <p className="control">
+                  <a className="button is-primary" href="#">
+                    <span className="icon is-small">
+                      <i className="fas fa-sign-in-alt" />
+                    </span>
+                    <span>Login</span>
+                  </a>
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </nav>
     );
   }
 }

@@ -7,7 +7,6 @@ class NewChapter extends React.Component {
   render() {
     return (
       <div className="container">
-        <h1>New Chapter</h1>
         <ChapterForm />
       </div>
     );
