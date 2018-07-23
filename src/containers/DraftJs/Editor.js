@@ -62,11 +62,11 @@ class DraftEditor extends React.Component {
     const { editorState } = this.state;
 
     if (isSoftNewlineEvent(e)) {
-      this.onChange(addBlock(editorState));
+      this.onChange(RichUtils.insertSoftNewline(editorState));
       return handle.YES;
     }
 
-    this.onChange(RichUtils.insertSoftNewline(editorState));
+    this.onChange(addBlock(editorState));
     return handle.YES;
   }
 
