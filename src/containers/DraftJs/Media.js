@@ -36,7 +36,6 @@ const Media = ({ block }) => {
   }
 
   if (format === 'youtube') {
-    console.log(name);
     return (
       <YouTube
         videoId={name}

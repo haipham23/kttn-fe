@@ -44,7 +44,6 @@ export const addBlock = (editorState, type = 'unstyled', data = {}) => {
   const newBlock = new ContentBlock({
     key: newBlockKey,
     type,
-    text: '',
     characterList: List(),
     depth: 0,
     data: Map(data),
@@ -74,7 +73,11 @@ export const addBlock = (editorState, type = 'unstyled', data = {}) => {
 
   let newEditorContent = EditorState.push(editorState, newContent, 'split-block');
 
-  if (type === 'atomic') {
+  const isLastBlock = !newEditorContent.getCurrentContent().getKeyAfter(newBlockKey);
+
+  console.log(111, isLastBlock);
+
+  if (type === 'atomic' && isLastBlock) {
     newEditorContent = addBlock(newEditorContent);
   }
 

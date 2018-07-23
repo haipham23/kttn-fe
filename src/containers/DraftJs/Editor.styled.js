@@ -1,4 +1,5 @@
 import styled from 'react-emotion';
+import Dropzone from 'react-dropzone';
 
 export const EditorWrapper = styled('div')`
   position: relative;
@@ -37,4 +38,17 @@ export const Quote = styled('div')`
 
 export const Div = styled('div')`
   margin-bottom: 12px;
+`;
+
+export const SDropzone = styled(Dropzone)`
+  width: 100%;
+  height: 50px;
+  margin-bottom: 10px;
+  border-width: 2px;
+  border-color: rgb(102, 102, 102);
+  border-style: dashed;
+  border-radius: 4px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 `;

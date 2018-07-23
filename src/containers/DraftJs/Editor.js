@@ -7,12 +7,12 @@ import {
 } from 'draft-js';
 import isSoftNewlineEvent from 'draft-js/lib/isSoftNewlineEvent';
 import JSONPretty from 'react-json-pretty';
-import Dropzone from 'react-dropzone';
 
 import Toolbar from './Toolbar';
-import { blockRenderMap, styleMap, mediaBlockRenderer } from './Editor.options';
+import { blockRenderMap, styleMap, mediaBlockRenderer, keyBindingFn } from './Editor.options';
 import { addBlock, uploadFile, isVideo, getVideoSrc } from './utils';
-import { EditorWrapper, EditorContent, H3 } from './Editor.styled';
+import { EditorWrapper, EditorContent, H3, SDropzone } from './Editor.styled';
+import { keys, handle } from './constants';
 
 
 class DraftEditor extends React.Component {
@@ -33,6 +33,7 @@ class DraftEditor extends React.Component {
     this._addMedia = this._addMedia.bind(this);
     this._onDrop = this._onDrop.bind(this);
     this._handlePastedText = this._handlePastedText.bind(this);
+    this._handleKeyCommand = this._handleKeyCommand.bind(this);
   }
 
   _toggleInline(style) {
@@ -54,11 +55,11 @@ class DraftEditor extends React.Component {
 
     if (isSoftNewlineEvent(e)) {
       this.onChange(addBlock(editorState));
-      return 'handled';
+      return handle.YES;
     }
 
     this.onChange(RichUtils.insertSoftNewline(editorState));
-    return 'handled';
+    return handle.YES;
   }
 
   _toggleReadonly(isReadonly) {
@@ -90,14 +91,30 @@ class DraftEditor extends React.Component {
         'atomic', 
         getVideoSrc(text)
       ));
-      return 'handled';
+      return handle.YES;
     }
 
-    return 'not-handled';
+    return handle.NO;
+  }
+
+  _handleKeyCommand(command) {
+    const { editorState } = this.state;
+
+    if (command === keys.SAVE) {
+      return handle.YES;
+    }
+
+    if (command === keys.BACK) {
+      this.onChange(RichUtils.onBackspace(editorState));
+      return handle.YES;
+    }
+
+    return handle.NO;
   }
   
   render() {
-    const content = convertToRaw(this.state.editorState.getCurrentContent());
+    const { editorState } = this.state;
+    const content = convertToRaw(editorState.getCurrentContent());
     
     return (
       <div>
@@ -109,29 +126,24 @@ class DraftEditor extends React.Component {
             toggleReadonly={this._toggleReadonly}
             isReadonly={this.state.isReadonly}
           />
-          <Dropzone
+          <SDropzone
             onDrop={this._onDrop}
             multiple={false}
             accept="image/*, audio/*, video/*"
-            style={{
-              width: '100%',
-              height: '50px',
-              marginBottom: '10px',
-              borderWidth: '2px',
-              borderColor: 'rgb(102, 102, 102)',
-              borderStyle: 'dashed',
-              borderRadius: '4px'
-            }}
             activeStyle={{
               backgroundColor: '#eee'
             }}
-          />
+          >
+            Drop your file here...
+          </SDropzone>
           <EditorContent>
             <Editor
               editorState={this.state.editorState}
               blockRenderMap={blockRenderMap}
               blockRendererFn={mediaBlockRenderer}
               customStyleMap={styleMap}
+              keyBindingFn={e => keyBindingFn(e, editorState)}
+              handleKeyCommand={this._handleKeyCommand}
               onChange={this.onChange}
               handleReturn={this._handleReturn}
               handlePastedText={this._handlePastedText}
