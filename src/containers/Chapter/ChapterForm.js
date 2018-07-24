@@ -1,10 +1,28 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import { toast } from 'react-toastify';
 
 import DraftEditor from '../DraftJs/Editor';
-import { Wrapper, EditorWrapper, NumberColumn } from './ChapterForm.styled';
+// import { saveChapter, updateChapter } from './utils';
+import { Wrapper, EditorWrapper, NumberColumn, Toast } from './ChapterForm.styled';
+
+// import 'react-toastify/dist/ReactToastify.css';
+
 
 class ChapterForm extends React.Component {
+  constructor(props) {
+    super(props);
+
+    this._save = this._save.bind(this);
+  }
+
+  _save() {
+    // saveChapter(data)
+    //   .then()
+
+    toast(<label>saved</label>);
+  }
+
   render() {
     return (
       <Wrapper className="container">
@@ -12,7 +30,7 @@ class ChapterForm extends React.Component {
           <NumberColumn className="column">
             <div className="field">
               <div className="control">
-              <input className="input" type="number" placeholder="Number" />
+              <input className="input" type="number" placeholder="No" />
               </div>
             </div>
           </NumberColumn>
@@ -25,8 +43,14 @@ class ChapterForm extends React.Component {
           </div>
         </div>
         <EditorWrapper>
-          <DraftEditor />
+          <DraftEditor
+            save={this._save}
+          />
         </EditorWrapper>
+        <Toast
+          autoClose={1000}
+          hideProgressBar
+        />
       </Wrapper>
     );
   }

@@ -1,7 +1,7 @@
 import React from 'react';
 import {
-  Editor, 
-  EditorState, 
+  Editor,
+  EditorState,
   RichUtils
 } from 'draft-js';
 import isSoftNewlineEvent from 'draft-js/lib/isSoftNewlineEvent';
@@ -97,7 +97,7 @@ class DraftEditor extends React.Component {
 
   _onDrop(acceptedFiles) {
     this.setState(
-      { 
+      {
         isDragging: false,
         isUploading: true
       },
@@ -112,8 +112,8 @@ class DraftEditor extends React.Component {
   _handlePastedText(text) {
     if (isVideo(text)) {
       this.onChange(addBlock(
-        this.state.editorState, 
-        'atomic', 
+        this.state.editorState,
+        'atomic',
         getVideoSrc(text)
       ));
       return handle.YES;
@@ -150,20 +150,21 @@ class DraftEditor extends React.Component {
       isDragging: false
     });
   }
-  
+
   render() {
     const { editorState, isDragging, isReadonly, isUploading } = this.state;
     // const content = convertToRaw(editorState.getCurrentContent());
-    
+
     return (
       <div>
         <Toolbar
           toggleInline={this._toggleInline}
           toggleBlock={this._toggleBlock}
           toggleReadonly={this._toggleReadonly}
+          save={this.props.save}
           isReadonly={isReadonly || isUploading}
         />
-        <EditorWrapper className="card">
+        <EditorWrapper>
           <Dropzone
             onDrop={this._onDrop}
             multiple={false}
