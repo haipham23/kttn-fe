@@ -43,7 +43,10 @@ class Register extends React.PureComponent {
         password2
       })
         .then(() => _this.setState(INIT_STATE, close))
-        .catch(() => _this.setState({ errorText: ERROR_MSG }));
+        .catch(() => _this.setState({
+          errorText: ERROR_MSG,
+          isLoading: false
+        }));
     });
   }
 

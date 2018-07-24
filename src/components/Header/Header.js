@@ -1,8 +1,12 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import { Link } from 'react-router-dom';
 
 import Login from './Login';
 import Register from './Register';
+
+import { saveToken, logout } from '../../actions/account';
 
 class Header extends React.Component {
   constructor(props) {
@@ -32,55 +36,84 @@ class Header extends React.Component {
   }
 
   render() {
+    const { email } = this.props.account;
+
     return (
       <nav className="navbar is-info">
         <div className="navbar-brand">
-          <a className="navbar-item" href="/">
-            <img src="https://bulma.io/images/bulma-logo-white.png" alt="Tin Lanh tre" width="112" height="28" />
-          </a>
+          <Link to="/" className="navbar-item">
+            <img
+              src="https://res.cloudinary.com/hai-pham/image/upload/v1532415191/kttn-fe/ikdk3o4iuycfpjdapyi8.png"
+              alt="Tin Lanh tre"
+              height="28"
+            />
+          </Link>
         </div>
         <div className="navbar-menu">
           <div className="navbar-start">
-            <a className="navbar-item" href="/new-chapter">
-              Add Chapter
-            </a>
-            <a className="navbar-item" href="/new-quiz">
-              Add Quiz
-            </a>
-            <a className="navbar-item" href="#">
-              Help
-            </a>
+            <Link to="/new-chapter" className="navbar-item">Add Chapter</Link>
+            <Link to="/" className="navbar-item">Add Quiz</Link>
+            <Link to="/" className="navbar-item">Help</Link>
           </div>
-          <div className="navbar-end">
-            <div className="navbar-item">
-              <div className="field has-addons">
-                <p className="control">
-                  <button className="button is-small is-info" onClick={() => this._toggleLogin(true)}>
-                    <span className="icon is-small">
-                      <i className="fas fa-sign-in-alt" />
-                    </span>
-                    <span>Login</span>
-                  </button>
-                </p>
+          {
+            !email &&
+            <div className="navbar-end">
+              <div className="navbar-item">
+                <div className="field has-addons">
+                  <p className="control">
+                    <button className="button is-small is-info" onClick={() => this._toggleLogin(true)}>
+                      <span className="icon is-small">
+                        <i className="fas fa-sign-in-alt" />
+                      </span>
+                      <span>Login</span>
+                    </button>
+                  </p>
+                </div>
+              </div>
+              <div className="navbar-item">
+                <div className="field has-addons">
+                  <p className="control">
+                    <button className="button is-small is-success" onClick={() => this._toggleRegister(true)}>
+                      <span className="icon is-small">
+                        <i className="fas fa-user-plus" />
+                      </span>
+                      <span>Register</span>
+                    </button>
+                  </p>
+                </div>
               </div>
             </div>
-            <div className="navbar-item">
-              <div className="field has-addons">
-                <p className="control">
-                  <button className="button is-small is-success" onClick={() => this._toggleRegister(true)}>
-                    <span className="icon is-small">
-                      <i className="fas fa-user-plus" />
-                    </span>
-                    <span>Register</span>
-                  </button>
-                </p>
+          }
+          {
+            email &&
+            <div className="navbar-end">
+              <div className="navbar-item">
+                <div className="field has-addons">
+                  <p className="control">
+                    <label className="label">
+                      { email }
+                    </label>
+                  </p>
+                </div>
+              </div>
+              <div className="navbar-item">
+                <div className="field has-addons">
+                  <p className="control">
+                    <button className="button is-small is-danger" onClick={this.props.logout}>
+                      <span className="icon is-small">
+                        <i className="fas fa-sign-out-alt" />
+                      </span>
+                    </button>
+                  </p>
+                </div>
               </div>
             </div>
-          </div>
+          }
         </div>
         <Login
           show={this.state.isLogin}
           close={() => this._toggleLogin(false)}
+          saveToken={this.props.saveToken}
         />
         <Register
           show={this.state.isRegister}
@@ -95,12 +128,11 @@ Header.propTypes = {
   //
 };
 
-function mapStateToProps({ i18n }) {
-  return {
-    i18n
-  };
-}
+const mapDispatchToProps = (dispatch) => bindActionCreators({ saveToken, logout }, dispatch);
+
+const mapStateToProps = ({ i18n, account }) => ({ i18n, account });
 
 export default connect(
-  mapStateToProps
+  mapStateToProps,
+  mapDispatchToProps
 )(Header);

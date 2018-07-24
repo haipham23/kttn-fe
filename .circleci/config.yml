@@ -21,6 +21,3 @@ jobs:
           command: |
             docker login $DOCKER_REPO -u $DOCKER_USER -p $DOCKER_PASS
             npm run deploy
-
-
-

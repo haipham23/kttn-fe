@@ -2,6 +2,7 @@ import { createStore, compose, applyMiddleware } from 'redux';
 import reduxImmutableStateInvariant from 'redux-immutable-state-invariant';
 import thunk from 'redux-thunk';
 import { routerMiddleware } from 'react-router-redux';
+import logger from 'redux-logger'
 
 import rootReducer from '../reducers';
 
@@ -25,6 +26,7 @@ function configureStoreDev(initialState, history) {
 
   const middlewares = [
     historyMw,
+    logger,
     reduxImmutableStateInvariant(),
     thunk,
   ];

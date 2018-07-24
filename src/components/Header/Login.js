@@ -30,7 +30,7 @@ class Login extends React.PureComponent {
   _login() {
     const _this = this;
     const { email, password } = _this.state;
-    const { close } = _this.props;
+    const { close, saveToken } = _this.props;
 
     _this.setState({
       errorText: '',
@@ -40,8 +40,23 @@ class Login extends React.PureComponent {
         email,
         password
       })
-        .then(() => _this.setState(INIT_STATE, close))
-        .catch(() => _this.setState({ errorText: ERROR_MSG }));
+        .then((response) => {
+          _this.setState(INIT_STATE);
+
+          // save token to redux store
+          saveToken({
+            token: response.data,
+            email
+          });
+
+          close();
+        })
+        .catch(() => {
+          _this.setState({
+            errorText: ERROR_MSG,
+            isLoading: false
+          })
+        });
     });
   }
 

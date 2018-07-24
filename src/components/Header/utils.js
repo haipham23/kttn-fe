@@ -2,7 +2,7 @@ import axios from 'axios';
 import Isemail from 'isemail';
 
 const isSame = (password, password2) => password === password2;
-const isEmail = email => Isemail.validate(email);
+const isEmail = email => email && Isemail.validate(email);
 const isPasswordValid = password => typeof password === 'string' && password.length >= 6;
 
 const ERROR_MSG = 'invalid email or password';
