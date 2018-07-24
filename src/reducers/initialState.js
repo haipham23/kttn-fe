@@ -1,4 +1,9 @@
 export default {
   home: {},
-  account: {}
+  account: {},
+  chapter: {
+    chapters: [],
+    limit: 30,
+    page: 0
+  }
 };

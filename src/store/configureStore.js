@@ -1,40 +1,38 @@
 import { createStore, compose, applyMiddleware } from 'redux';
 import reduxImmutableStateInvariant from 'redux-immutable-state-invariant';
 import thunk from 'redux-thunk';
-import { routerMiddleware } from 'react-router-redux';
 import logger from 'redux-logger'
+import { connectRouter, routerMiddleware } from 'connected-react-router';
 
 import rootReducer from '../reducers';
 
 
 function configureStoreProd(initialState, history) {
-  const historyMw = routerMiddleware(history);
-
   const middlewares = [
-    historyMw,
+    routerMiddleware(history),
     thunk,
   ];
 
-  return createStore(rootReducer, initialState, compose(
-    applyMiddleware(...middlewares)
-    )
+  return createStore(
+    connectRouter(history)(rootReducer),
+    initialState,
+    compose(applyMiddleware(...middlewares))
   );
 }
 
 function configureStoreDev(initialState, history) {
-  const historyMw = routerMiddleware(history);
-
   const middlewares = [
-    historyMw,
+    routerMiddleware(history),
     logger,
     reduxImmutableStateInvariant(),
     thunk,
   ];
 
   const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
-  const store = createStore(rootReducer, initialState, composeEnhancers(
-    applyMiddleware(...middlewares)
-    )
+  const store = createStore(
+    connectRouter(history)(rootReducer),
+    initialState,
+    composeEnhancers(applyMiddleware(...middlewares))
   );
 
   if (module.hot) {

@@ -1,26 +1,61 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { toast } from 'react-toastify';
 
 import DraftEditor from '../DraftJs/Editor';
-// import { saveChapter, updateChapter } from './utils';
+import { saveChapter, updateChapter } from './utils';
 import { Wrapper, EditorWrapper, NumberColumn, Toast } from './ChapterForm.styled';
-
-// import 'react-toastify/dist/ReactToastify.css';
-
 
 class ChapterForm extends React.Component {
   constructor(props) {
     super(props);
 
+    this.state = {
+      no: '',
+      title: ''
+    }
+
+    this._onChange = this._onChange.bind(this);
     this._save = this._save.bind(this);
   }
 
-  _save() {
-    // saveChapter(data)
-    //   .then()
+  _onChange(type, e) {
+    this.setState({
+      [type]: e.target.value
+    });
+  }
 
-    toast(<label>saved</label>);
+  _save(content) {
+    const _this = this;
+    const { no, title, chapterId } = _this.state;
+    const token = _this.props.account && _this.props.account.token;
+
+    if (token) {
+      const postData = {
+        chapterId,
+        no: Number(no),
+        title,
+        content,
+        sessionToken: token
+      };
+
+      if (!chapterId) {
+        saveChapter(postData)
+          .then((response) => {
+            _this.setState({ chapterId: response.data.objectId });
+            toast(<label>saved</label>);
+          })
+          .catch((e) => {
+            console.log(111, e);
+            toast(<label>{e.message}</label>)
+          });
+      } else {
+        updateChapter(postData)
+          .then(() => toast(<label>saved</label>))
+          .catch((e) => toast(<label>{e.message}</label>));
+      }
+    }
   }
 
   render() {
@@ -30,14 +65,26 @@ class ChapterForm extends React.Component {
           <NumberColumn className="column">
             <div className="field">
               <div className="control">
-              <input className="input" type="number" placeholder="No" />
+                <input
+                  className="input"
+                  type="number"
+                  placeholder="No"
+                  onChange={(e) => this._onChange('no', e)}
+                  value={this.state.no}
+                />
               </div>
             </div>
           </NumberColumn>
           <div className="column is-half">
             <div className="field">
               <div className="control">
-                <input className="input" type="text" placeholder="Title" />
+                <input
+                  className="input"
+                  type="text"
+                  placeholder="Title"
+                  onChange={(e) => this._onChange('title', e)}
+                  value={this.state.title}
+                />
               </div>
             </div>
           </div>
@@ -57,14 +104,10 @@ class ChapterForm extends React.Component {
 }
 
 ChapterForm.propTypes = {
-  //
+  chapterId: PropTypes.string
 };
 
-function mapStateToProps({ i18n }) {
-  return {
-    i18n
-  };
-}
+const mapStateToProps = ({ i18n, account }) => ({ i18n, account });
 
 export default connect(
   mapStateToProps

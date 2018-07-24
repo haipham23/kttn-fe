@@ -1,8 +1,10 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import {
   Editor,
   EditorState,
-  RichUtils
+  RichUtils,
+  convertToRaw
 } from 'draft-js';
 import isSoftNewlineEvent from 'draft-js/lib/isSoftNewlineEvent';
 // import JSONPretty from 'react-json-pretty';
@@ -42,6 +44,8 @@ class DraftEditor extends React.Component {
     this._onDrop = this._onDrop.bind(this);
     this._onDragEnter = this._onDragEnter.bind(this);
     this._onDragLeave = this._onDragLeave.bind(this);
+
+    this._save = this._save.bind(this);
   }
 
   _toggleInline(style) {
@@ -151,6 +155,14 @@ class DraftEditor extends React.Component {
     });
   }
 
+  _save() {
+    const { editorState } = this.state;
+    const content = convertToRaw(editorState.getCurrentContent());
+    const contentStr = JSON.stringify(content);
+
+    this.props.save(contentStr);
+  }
+
   render() {
     const { editorState, isDragging, isReadonly, isUploading } = this.state;
     // const content = convertToRaw(editorState.getCurrentContent());
@@ -161,7 +173,7 @@ class DraftEditor extends React.Component {
           toggleInline={this._toggleInline}
           toggleBlock={this._toggleBlock}
           toggleReadonly={this._toggleReadonly}
-          save={this.props.save}
+          save={this._save}
           isReadonly={isReadonly || isUploading}
         />
         <EditorWrapper>
@@ -207,5 +219,9 @@ class DraftEditor extends React.Component {
     );
   }
 }
+
+DraftEditor.propTypes = {
+  save: PropTypes.func.isRequired
+};
 
 export default DraftEditor;
