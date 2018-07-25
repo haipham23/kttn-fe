@@ -13,6 +13,7 @@ import Footer from './components/Footer/Footer';
 import Home from './containers/Home/Home';
 import NewChapter from './containers/Chapter/NewChapter';
 import NotFound from './components/NotFound/NotFound';
+import PrivateRoute from './components/PrivateRoute/PrivateRoute';
 
 require('./favicon.ico');
 
@@ -26,8 +27,8 @@ render(
         <Header />
         <Switch>
           <Route exact path={INDEX} component={Home} />
-          <Route path={NEW_CHAPTER} component={NewChapter} />
-          <Route path={EDIT_CHAPTER} component={NewChapter} />
+          <PrivateRoute path={NEW_CHAPTER} component={NewChapter} />
+          <PrivateRoute path={EDIT_CHAPTER} component={NewChapter} />
           <Route component={NotFound} />
         </Switch>
         <Footer />

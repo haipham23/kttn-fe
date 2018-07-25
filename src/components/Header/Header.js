@@ -2,11 +2,13 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { Link } from 'react-router-dom';
+import equal from 'deep-equal';
 
 import Login from './Login';
 import Register from './Register';
 
 import { saveToken, logout } from '../../actions/account';
+import { BrandImg } from './Header.styled';
 
 class Header extends React.Component {
   constructor(props) {
@@ -19,6 +21,20 @@ class Header extends React.Component {
 
     this._toggleLogin = this._toggleLogin.bind(this);
     this._toggleRegister = this._toggleRegister.bind(this);
+  }
+
+  componentDidUpdate(prevProps) {
+    if (!equal(prevProps.router, this.props.router)) {
+      const { router } = this.props;
+      const isLogin = router
+        && router.location
+        && router.location.state
+        && router.location.state.isLogin;
+
+      if (isLogin) {
+        this._toggleLogin(true);
+      }
+    }
   }
 
   _toggleLogin(isLogin) {
@@ -41,11 +57,10 @@ class Header extends React.Component {
     return (
       <nav className="navbar is-info">
         <div className="navbar-brand">
-          <Link to="/" className="navbar-item">
-            <img
-              src="https://res.cloudinary.com/hai-pham/image/upload/v1532415191/kttn-fe/ikdk3o4iuycfpjdapyi8.png"
+          <Link to="/" className="navbar-item" style={{ padding: 0 }}>
+            <BrandImg
+              src="https://res.cloudinary.com/hai-pham/image/upload/v1532519670/kttn-fe/fj2kh83hanvtxy3i63ww.png"
               alt="Tin Lanh tre"
-              height="28"
             />
           </Link>
         </div>
@@ -90,7 +105,7 @@ class Header extends React.Component {
               <div className="navbar-item">
                 <div className="field has-addons">
                   <p className="control">
-                    <label className="label">
+                    <label className="label has-text-light">
                       { email }
                     </label>
                   </p>
@@ -130,7 +145,7 @@ Header.propTypes = {
 
 const mapDispatchToProps = (dispatch) => bindActionCreators({ saveToken, logout }, dispatch);
 
-const mapStateToProps = ({ i18n, account }) => ({ i18n, account });
+const mapStateToProps = ({ i18n, account, router }) => ({ i18n, account, router });
 
 export default connect(
   mapStateToProps,

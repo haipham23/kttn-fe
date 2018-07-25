@@ -11,10 +11,14 @@ class ChapterForm extends React.Component {
   constructor(props) {
     super(props);
 
+    const { chapter } = this.props;
+
     this.state = {
-      no: '',
-      title: ''
-    }
+      no: chapter.no,
+      title: chapter.title,
+      content: chapter.content,
+      chapterId: chapter.objectId
+    };
 
     this._onChange = this._onChange.bind(this);
     this._save = this._save.bind(this);
@@ -46,10 +50,7 @@ class ChapterForm extends React.Component {
             _this.setState({ chapterId: response.data.objectId });
             toast(<label>saved</label>);
           })
-          .catch((e) => {
-            console.log(111, e);
-            toast(<label>{e.message}</label>)
-          });
+          .catch((e) => toast(<label>{e.message}</label>));
       } else {
         updateChapter(postData)
           .then(() => toast(<label>saved</label>))
@@ -91,6 +92,7 @@ class ChapterForm extends React.Component {
         </div>
         <EditorWrapper>
           <DraftEditor
+            content={this.state.content}
             save={this._save}
           />
         </EditorWrapper>

@@ -12,4 +12,8 @@ export const updateChapter = (data) => {
     `https://api.tinlanhtre.com/chapter/${data.chapterId}`,
     data,
   );
-}
+};
+
+export const getOneChapter = (chapterId) => {
+  return axios.get(`https://api.tinlanhtre.com/chapter/${chapterId}`);
+};

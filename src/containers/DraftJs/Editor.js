@@ -4,7 +4,8 @@ import {
   Editor,
   EditorState,
   RichUtils,
-  convertToRaw
+  convertToRaw,
+  convertFromRaw
 } from 'draft-js';
 import isSoftNewlineEvent from 'draft-js/lib/isSoftNewlineEvent';
 // import JSONPretty from 'react-json-pretty';
@@ -20,8 +21,20 @@ import { keys, handle } from './constants';
 class DraftEditor extends React.Component {
   constructor(props) {
     super(props);
+
+    let contentState;
+
+    try {
+      const contentJson = JSON.parse(this.props.content);
+      contentState = convertFromRaw(contentJson);
+    } catch(e) { } // eslint-disable-line
+
+    const editorState = contentState
+      ? EditorState.createWithContent(contentState)
+      : EditorState.createEmpty();
+
     this.state = {
-      editorState: EditorState.createEmpty(),
+      editorState,
       isReadonly: false,
       isDragging: false,
       isUploading: false,
@@ -221,7 +234,8 @@ class DraftEditor extends React.Component {
 }
 
 DraftEditor.propTypes = {
-  save: PropTypes.func.isRequired
+  save: PropTypes.func.isRequired,
+  content: PropTypes.string.isRequired
 };
 
 export default DraftEditor;

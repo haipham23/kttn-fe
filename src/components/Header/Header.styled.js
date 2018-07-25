@@ -18,3 +18,9 @@ export const ErrorText = styled('p')`
 export const GroupField = styled('div')`
   display: flex;
 `;
+
+export const BrandImg = styled('img')`
+  max-height: 64px !important;
+  padding-left: 10px;
+  padding-right: 10px;
+`;
