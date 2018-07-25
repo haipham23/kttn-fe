@@ -2,6 +2,7 @@ import React from 'react';
 
 import { register } from './utils';
 import { Column, ErrorText, GroupField } from './Header.styled';
+import Modal from '../Modal/Modal';
 
 const INIT_STATE = {
   email: '',
@@ -55,59 +56,58 @@ class Register extends React.PureComponent {
     const { show, close } = this.props;
 
     return (
-      <div className={`modal ${show ? 'is-active' : ''}`}>
-        <div className="modal-background" />
-        <div className="modal-content">
-          <Column>
-            <div className="field">
-              <div className="control">
-                <input
-                  value={email}
-                  onChange={e => this._onChange('email', e)}
-                  className="input"
-                  type="email"
-                  placeholder="email"
-                />
-              </div>
+      <Modal
+        show={show}
+        hide={close}
+      >
+        <Column>
+          <div className="field">
+            <div className="control">
+              <input
+                value={email}
+                onChange={e => this._onChange('email', e)}
+                className="input"
+                type="email"
+                placeholder="email"
+              />
             </div>
-            <div className="field">
-              <div className="control">
-                <input
-                  value={password}
-                  onChange={e => this._onChange('password', e)}
-                  className="input"
-                  type="password"
-                  placeholder="password"
-                />
-              </div>
+          </div>
+          <div className="field">
+            <div className="control">
+              <input
+                value={password}
+                onChange={e => this._onChange('password', e)}
+                className="input"
+                type="password"
+                placeholder="password"
+              />
             </div>
-            <div className="field">
-              <div className="control">
-                <input
-                  value={password2}
-                  onChange={e => this._onChange('password2', e)}
-                  className="input"
-                  type="password"
-                  placeholder="retype password"
-                />
-              </div>
+          </div>
+          <div className="field">
+            <div className="control">
+              <input
+                value={password2}
+                onChange={e => this._onChange('password2', e)}
+                className="input"
+                type="password"
+                placeholder="retype password"
+              />
             </div>
-            <GroupField className="field">
-              <button
-                className={`button is-success ${isLoading ? 'is-loading' : ''}`}
-                onClick={this._register}
-                disabled={isLoading}
-              >
-                Register
-              </button>
-              <ErrorText className="control has-text-danger">
-                {errorText}
-              </ErrorText>
-            </GroupField>
-          </Column>
-        </div>
-        <button className="modal-close is-large" aria-label="close" onClick={close} />
-      </div>
+          </div>
+          <GroupField className="field">
+            <button
+              className={`button is-success ${isLoading ? 'is-loading' : ''}`}
+              onClick={this._register}
+              disabled={isLoading}
+            >
+              Register
+            </button>
+            <ErrorText className="control has-text-danger">
+              {errorText}
+            </ErrorText>
+          </GroupField>
+        </Column>
+      </Modal>
     );
   }
 }

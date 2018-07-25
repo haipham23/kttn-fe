@@ -6,7 +6,7 @@ class Footer extends React.Component {
     return (
       <footer className="footer">
         <div className="content has-text-centered">
-          Copyright 2018 © Hai Pham
+          Copyright 2018 © Tin Lanh Tre
         </div>
       </footer>
     );
